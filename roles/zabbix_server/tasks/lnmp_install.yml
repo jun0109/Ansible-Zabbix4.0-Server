@@ -1,0 +1,56 @@
+---
+- name: selinux disabled
+  selinux:
+    state: disabled
+
+- name: firewalld off
+  service:
+    name: firewalld.service
+    state: stopped
+
+- name: Install wget
+  yum: name=wget state=latest
+
+- name: add nginx repo
+  yum: 
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+
+#重複會錯
+
+- name: Install nginx
+  yum: name=nginx state=latest
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: Install mariadb
+  yum: name={{ item }} state=latest
+  with_items:
+    - mariadb
+    - mariadb-server
+    - MySQL-python
+
+- name: mariadb start    
+  service: 
+    name: mariadb
+    state: started
+  
+- name: add php7 repo
+  shell: "rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
+#重複會錯
+
+- name: add php7 repo
+  shell: "rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm"
+#重複會錯
+
+- name: Install PHP7
+  yum: name={{ item }} state=latest
+  with_items:
+      - php72w
+      - php72w-devel
+      - php72w-fpm
+      - php72w-gd
+      - php72w-mbstring
+      - php72w-mysql

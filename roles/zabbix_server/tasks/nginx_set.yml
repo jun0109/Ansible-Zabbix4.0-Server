@@ -1,0 +1,25 @@
+---
+- name: set www.conf [user=nginx,group=nginx]
+  template: 
+      src: conf.d/www.conf 
+      dest: /etc/php-fpm.d/www.conf
+
+- name: set php.ini
+  template:
+      src: conf.d/php.ini
+      dest: /etc/php.ini
+
+- name: set etc/nginx/conf.d/default.conf
+  template:
+      src: conf.d/default.conf
+      dest: /etc/nginx/conf.d/default.conf
+
+- name: start php-fpm
+  service:
+      name: php-fpm.service
+      state: started
+
+- name: restart nginx
+  service:
+      name: nginx
+      state: restarted

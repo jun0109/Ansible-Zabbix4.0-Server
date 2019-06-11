@@ -1,0 +1,19 @@
+---
+- name: create zabbix db
+  mysql_db:
+      name: "zabbix"
+      encoding: "utf8"
+      state: "present"
+      config_file: "/etc/my.cnf"
+      state: "import"
+      target: "/usr/share/doc/zabbix-server-mysql-4.0.7/create.sql.gz"
+
+- name: create zabbix user
+  mysql_user:
+      login_user: "root"
+      login_password: ""
+      config_file: "/etc/my.cnf"
+      user: "zabbix"
+      password: "zabbix"
+      priv: "zabbix.*:ALL"
+      state: "present"
