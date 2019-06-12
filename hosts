@@ -1,2 +1,2 @@
 [zabbix_server]
-10.28.109.174  ansible_ssh_pass="steven"
+192.168.43.73
