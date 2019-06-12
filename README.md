@@ -1,45 +1,29 @@
 ## zabbix4.0_ansible 概要
-ansible2.7を用いてZabbix-server 4.0を構築する。
+使用 ansible2.7 部署 Zabbix-server 4.0 for Centos7 。
 
 ## 環境
-* ansibleサーバ
+* ansible 
   + CentOS7
   + ansible2.7
   
-* Zabbixサーバ
+* Zabbix
   + CentOS7
-  + インターネット接続可能
-  + SELINUX無効
+  + SELINUX disable
+  + firewalld disable
 
 ## 設定内容
 * zabbix-server
-  + firewall設定
-  + zabbixリポジトリ登録
-  + zabbix-serverインストール
-  + zabbixデータベース作成
-  + zabbix-server設定
-
-* zabbix-agent
-  + firewall設定
-  + zabbixリポジトリ登録
-  + zabbix-agentインストール
-  + zabbix-agent設定
+  + LNMP install
+  + zabbix DB login
+  + zabbix-server install
+  + zabbix-server set
+ 
   
-## 変数一覧
-* role/zabbix-server/defaults/main.yml
-  + zabbix_mariadb_password ... zabbixデータベースのパスワード
-  + php_timezone ... タイムゾーン
-  
-* role/zabbix-agent/defaults/main.yml
-  + zabbix_server_ip ... ZabbixサーバのIPアドレス
-  + zabbix_server_active_ip ... Zabbixサーバ（アクティブ）のIPアドレス
-  + allow_root ... Zabbixからサーバへのアクセス時にrootユーザを許可するなら 1 しないなら 0   
-  
-## 実行方法
+## 實行方法
 ```
-git clone https://github.com/AkihikoTakahashi/zabbix4.0_ansible.git
-vi zabbix4.0_ansible/production
-IPをZabbixサーバのIPに変更してください
+git clone https://github.com/sssss31302/Ansible-Zabbix4.0-CentOS.git
 
-ansible-playbook -i zabbix4.0_ansible/production zabbix4.0_ansible/site.yml --ask-pass
+to hosts change your server IP
+
+ansible-playbook -i hosts site,yml -u {username} -k 
 ```

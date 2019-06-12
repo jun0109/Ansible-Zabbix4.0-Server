@@ -1,6 +1,6 @@
 ---
-- import_tasks: lnmp_install.yml
-- import_tasks: nginx_set.yml
-- import_tasks: zabbix_install.yml
+#- import_tasks: lnmp_install.yml
+#- import_tasks: nginx_set.yml
+#- import_tasks: zabbix_install.yml
 - import_tasks: mariadb_set.yml
 - import_tasks: commend.yml

@@ -1,45 +1,20 @@
 ---
-- name: copy zabbix to html
-  shell: "cp -r /usr/share/zabbix/ /usr/share/nginx/html"
-
-- name: chown /etc/zabbix/
-  shell: "chown -R zabbix.zabbix /etc/zabbix/"
-
-- name: chown /usr/share/nginx/
-  shell: "chown -R zabbix.zabbix /usr/share/nginx/"
-
-- name: chown /usr/lib/zabbix/
-  shell: "chown -R zabbix.zabbix /usr/lib/zabbix/"
-
-- name: chown /etc/zabbix/web/
-  shell: "chmod -R 755 /etc/zabbix/web/"
-
-- name: chown /var/lib/php/session/
-  shell: "chmod -R 777 /var/lib/php/session/"
-
-- name: start zabbix-server
+- name: chown files and copy zabbix to html
+  command: >
+    cp -r /usr/share/zabbix/ /usr/share/nginx/html
+    chown -R zabbix.zabbix /etc/zabbix/
+    chown -R zabbix.zabbix /usr/share/nginx/
+    chown -R zabbix.zabbix /usr/lib/zabbix/
+    chmod -R 755 /etc/zabbix/web/
+    chmod -R 777 /var/lib/php/session/
+    
+- name: start zabbix & nginx & php-fpm
   systemd:
-    state: started
-    name: zabbix-server.service
+    state:  started
+    name:   "{{ item }}"
     enabled: yes
-
-- name: start zabbix-agent
-  systemd:
-    state: started
-    name: zabbix-agent.service
-    enabled: yes
-
-- name: restart php7
-  systemd:
-    state: restarted
-    name: php-fpm.service
-
-- name: restart nginx
-  systemd:
-    state: restarted
-    name: nginx
-
-- name: restart zabbix
-  systemd:
-    state: restarted
-    name: zabbix-server.service
+  with_items:
+    - zabbix-server.service
+    - zabbix-agent.service
+    - php-fpm.service
+    - nginx
