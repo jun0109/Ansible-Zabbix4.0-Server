@@ -8,49 +8,39 @@
     name: firewalld.service
     state: stopped
 
-- name: Install wget
-  yum: name=wget state=latest
+- name: cp nginx & php7 & zabbix repo
+  copy:
+    src:    "{{ item }}"
+    dest:   /tmp/
+  with_items:
+    - epel-release-latest-7.noarch.rpm
+    - nginx-release-centos-7-0.el7.ngx.noarch.rpm
+    - webtatic-release.rpm
+    - zabbix-release-4.0-1.el7.noarch.rpm
 
-- name: add nginx repo
-  yum: 
-    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+- name: Add nginx & php7 & zabbix repo
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - /tmp/epel-release-latest-7.noarch.rpm
+    - /tmp/nginx-release-centos-7-0.el7.ngx.noarch.rpm
+    - /tmp/webtatic-release.rpm
+    - /tmp/zabbix-release-4.0-1.el7.noarch.rpm
 
-#重複會錯
-
-- name: Install nginx
-  yum: name=nginx state=latest
-
-- name: start nginx
-  service:
-    name: nginx
-    state: started
-
-- name: Install mariadb
-  yum: name={{ item }} state=latest
+- name: Install mariadb & nginx
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
     - mariadb
     - mariadb-server
     - MySQL-python
-
-- name: mariadb start    
-  service: 
-    name: mariadb
-    state: started
-  
-- name: add php7 repo
-  shell: "rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
-#重複會錯
-
-- name: add php7 repo
-  shell: "rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm"
-#重複會錯
-
-- name: Install PHP7
-  yum: name={{ item }} state=latest
-  with_items:
-      - php72w
-      - php72w-devel
-      - php72w-fpm
-      - php72w-gd
-      - php72w-mbstring
-      - php72w-mysql
+    - nginx
+    - wget
+    - php72w
+    - php72w-devel
+    - php72w-fpm
+    - php72w-gd
+    - php72w-mbstring
+    - php72w-mysql
