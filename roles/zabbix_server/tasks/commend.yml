@@ -1,12 +1,19 @@
 ---
-- name: chown files and copy zabbix to html
+- name: copy zabbix to html
+  become: true
   command: >
     cp -r /usr/share/zabbix/ /usr/share/nginx/html
-    chown -R zabbix.zabbix /etc/zabbix/
-    chown -R zabbix.zabbix /usr/share/nginx/
-    chown -R zabbix.zabbix /usr/lib/zabbix/
-    chmod -R 755 /etc/zabbix/web/
-    chmod -R 777 /var/lib/php/session/
+
+- name: chown files 
+  become: true
+  command:
+    "{{ item }}"
+  with_items:
+    - chown -R zabbix.zabbix /etc/zabbix/
+    - chown -R zabbix.zabbix /usr/share/nginx/
+    - chown -R zabbix.zabbix /usr/lib/zabbix/
+    - chmod -R 755 /etc/zabbix/web/
+    - chmod -R 777 /var/lib/php/session/
     
 - name: start zabbix & nginx & php-fpm
   systemd:
