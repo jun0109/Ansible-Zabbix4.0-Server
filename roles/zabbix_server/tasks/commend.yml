@@ -1,11 +1,9 @@
 ---
 - name: copy zabbix to html
-  become: true
   command: >
     cp -r /usr/share/zabbix/ /usr/share/nginx/html
 
 - name: chown files 
-  become: true
   command:
     "{{ item }}"
   with_items:
