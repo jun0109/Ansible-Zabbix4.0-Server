@@ -44,3 +44,9 @@
     - php72w-gd
     - php72w-mbstring
     - php72w-mysql
+
+- name: start mysql
+  systemd:
+    state:  started
+    name:   mariadb
+    enabled: yes

@@ -1,12 +1,14 @@
 ---
 - name: create zabbix db
   mysql_db:
+      login_user: "root"
+      login_password: ""
+      login_unix_socket: "/var/lib/mysql/mysql.sock"
       name: "zabbix"
       encoding: "utf8"
-      state: "present"
       config_file: "/etc/my.cnf"
       state: "import"
-      target: "/usr/share/doc/zabbix-server-mysql-4.0.7/create.sql.gz"
+      target: "/usr/share/doc/zabbix-server-mysql-4.0.9/create.sql.gz"
 
 - name: create zabbix user
   mysql_user:
